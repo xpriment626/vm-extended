@@ -6,7 +6,6 @@ import { IERC721 } from "./interfaces/IERC721.sol";
 import { Test } from "../lib/forge-std/src/Test.sol";
 
 error UnknownChain();
-
 /**
 * @dev VmExtended is a set of functions designed to make
 *      token interactions on mainnet forks more seamless.
@@ -16,6 +15,8 @@ error UnknownChain();
 * @notice Any tests made using this contract must be ran on a fork of 
 *         EVM compatible mainnets.
 */
+
+/// @dev VmExtended inherits from forge-std Test which itself inherits from DSTest
 abstract contract VmExtended is Test {
 
     /// Uniswap v2 constants
