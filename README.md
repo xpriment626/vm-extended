@@ -45,7 +45,7 @@ contract ContractTest is VmExtended {
 }
 ```
 
-### Example initWithNFT()
+### Example `initWithNFT()`
 
 Initialises an account with any NFT deployed to mainnet
 
@@ -75,7 +75,7 @@ contract ContractTest is VmExtended {
 }
 ```
 
-### Example: Init fullyFunded()
+### Example: `Init fullyFunded()`
 
 ```solidity
 function testFullFunding() public {
