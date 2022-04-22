@@ -4,6 +4,7 @@ pragma solidity ^0.8.0;
 import { Vm } from "./interfaces/Vm.sol";
 import { DSTest } from "../lib/ds-test/src/test.sol";
 import { IERC20 } from "./interfaces/IERC20.sol";
+import { IERC721 } from "./interfaces/IERC721.sol";
 
 error UnknownChain();
 
@@ -31,6 +32,7 @@ abstract contract VmExtended is DSTest {
 
     // Initialises a user with 100 ether
     /// @param _id is used to set the private key of the user
+    /// @dev returns address funded with ETH
     function initWithETH(uint256 _id) public returns (address) {
         address user = vm_extended.addr(_id);
         vm_extended.deal(user, 100 ether);
@@ -44,9 +46,44 @@ abstract contract VmExtended is DSTest {
     *                      from the token contract itself to the user.
     * @param _amount of tokens to transfer
     */
-    function initWithERC20(uint256 _id, address _tokenAddress, uint256 _amount) public returns(address) {
+    /// @dev returns address funded with ERC20 token
+    function initWithERC20(uint256 _id, address _tokenAddress, uint256 _amount) public returns(address _user, IERC20 _token) {
         IERC20 token = IERC20(_tokenAddress);
         address user = vm_extended.addr(_id);
+
+        vm_extended.startPrank(_tokenAddress);
+        token.approve(_tokenAddress, _amount);
+        token.transferFrom(_tokenAddress, user, _amount);
+        token.approve(user, _amount);
+        vm_extended.stopPrank();
+
+        return (user, token);
+    }
+
+    /**
+    * @param _id sets the private key for the user
+    * @param _nftAddress any NFT address on mainnet
+    * @param _tokenID mainnet tokenID
+    * @param _owner current owner on mainnet 
+    */
+    /// @dev returns address with NFT
+    function initWithNFT(uint256 _id, address _nftAddress, uint256 _tokenId, address _owner) public returns (address) {
+        IERC721 nft = IERC721(_nftAddress);
+        address user = vm_extended.addr(_id);
+
+        vm_extended.startPrank(_nftAddress);
+        nft.approve(_owner, _tokenId);
+        nft.transferFrom(_owner, user, _tokenId);
+        vm_extended.stopPrank();
+
+        return user;
+    }
+
+    /// @dev returns an address funded with ETH and any ERC20 on mainnet
+    function fullyFunded(uint256 _id, address _tokenAddress, uint256 _amount) public returns (address) {
+        IERC20 token = IERC20(_tokenAddress);
+        address user = vm_extended.addr(_id);
+        vm_extended.deal(user, 100 ether);
 
         vm_extended.startPrank(_tokenAddress);
         token.approve(_tokenAddress, _amount);
@@ -58,20 +95,20 @@ abstract contract VmExtended is DSTest {
     }
 
     /**
-    * @param chain must be passed in as an all lowercase string
+    * @param _chainId must be passed in as an all lowercase string
     * 1. "ethereum"
     * 2. "optimism"
     * 3. "arbitrum"
     * 3. "polygon"
     */
-    function fetchWrapped(string calldata chain) public pure returns (address) {
-        if (keccak256(abi.encodePacked(chain)) == keccak256(abi.encodePacked("ethereum"))) {
+    function fetchWrapped(uint256 _chainId) public pure returns (address) {
+        if (_chainId== 1) {
             return 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2;
-        } else if (keccak256(abi.encodePacked(chain)) == keccak256(abi.encodePacked("optimism"))) {
+        } else if (_chainId== 10) {
             return 0x4200000000000000000000000000000000000006;
-        } else if (keccak256(abi.encodePacked(chain)) == keccak256(abi.encodePacked("arbitrum"))) {
+        } else if (_chainId== 42161) {
             return 0x82aF49447D8a07e3bd95BD0d56f35241523fBab1;
-        } else if (keccak256(abi.encodePacked(chain)) == keccak256(abi.encodePacked("polygon"))) {
+        } else if (_chainId== 137) {
             return 0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270;
         } else revert UnknownChain();
     }
