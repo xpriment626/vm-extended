@@ -104,10 +104,13 @@ abstract contract VmExtended is Test {
     function tokenMultiInit(
         address _first, 
         address _second, 
-        address _third) public returns (IERC20 _token1, IERC20 _token2, IERC20 _token3) {
+        address _third) public pure returns (IERC20 _token1, IERC20 _token2, IERC20 _token3) {
 
+            IERC20 token1 = IERC20(_first);
+            IERC20 token2 = IERC20(_second);
+            IERC20 token3 = IERC20(_third);
 
-
+            return (token1, token2, token3);
     }
 
     /**

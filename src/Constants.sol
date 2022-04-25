@@ -3,9 +3,9 @@ pragma solidity ^0.8.0;
 
 abstract contract Constants {
 
-    /*****************
-           Core
-    *****************/
+    /***********************
+         Core Pricefeeds
+    ************************/
 
     address public constant ETH_USD = 0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419;
     address public constant BTC_USD = 0xF4030086522a5bEEa4988F8cA5B36dbC97BeE88c;
@@ -14,17 +14,17 @@ abstract contract Constants {
     address public constant USDT_ETH = 0xEe9F2375b4bdF6387aa8265dD4FB8F16512A1d46;
     address public constant USDC_ETH = 0x986b5E1e1755e3C2440e960477f25201B0a8bbD4;
 
-    /*****************
-        Stablecoins
-    *****************/
+    /***********************
+      Stablecoin Pricefeeds
+    ************************/
 
     address public constant DAI_USD = 0xAed0c38402a5d19df6E4c03F4E2DceD6e29c1ee9;
     address public constant USDT_USD = 0x3E7d1eAB13ad0104d2750B8863b489D65364e32D;
     address public constant USDC_USD = 0x8fFfFfd4AfB6115b954Bd326cbe7B4BA576818f6;
 
-    /*****************
-          De-Fi
-    *****************/
+    /***********************
+        De-Fi Pricefeeds
+    ************************/
 
     address public constant COMP_USD = 0xdbd020CAeF83eFd542f4De03e3cF0C28A4428bd5;
     address public constant SNX_USD = 0xDC3EA94CD0AC27d9A86C180091e7f78C683d3699;
