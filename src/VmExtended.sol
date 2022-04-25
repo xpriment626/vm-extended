@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: UNLICENSED
+// SPDX-License-Identifier: APACHE-2.0
 pragma solidity ^0.8.0;
 
 import { IERC20 } from "./interfaces/IERC20.sol";
@@ -31,8 +31,8 @@ abstract contract VmExtended is Test {
     /// @param _id is used to set the private key of the user
     /// @dev returns address funded with ETH
     function initWithETH(uint256 _id) public returns (address) {
-        address user = vm_extended.addr(_id);
-        vm_extended.deal(user, 100 ether);
+        address user = vm.addr(_id);
+        vm.deal(user, 100 ether);
 
         return user;
     }
@@ -46,13 +46,13 @@ abstract contract VmExtended is Test {
     /// @dev returns address funded with ERC20 token
     function initWithERC20(uint256 _id, address _tokenAddress, uint256 _amount) public returns(address _user, IERC20 _token) {
         IERC20 token = IERC20(_tokenAddress);
-        address user = vm_extended.addr(_id);
+        address user = vm.addr(_id);
 
-        vm_extended.startPrank(_tokenAddress);
+        vm.startPrank(_tokenAddress);
         token.approve(_tokenAddress, _amount);
         token.transferFrom(_tokenAddress, user, _amount);
         token.approve(user, _amount);
-        vm_extended.stopPrank();
+        vm.stopPrank();
 
         return (user, token);
     }
@@ -64,32 +64,50 @@ abstract contract VmExtended is Test {
     * @param _owner current owner on mainnet 
     */
     /// @dev returns address with NFT
-    function initWithNFT(uint256 _id, address _nftAddress, uint256 _tokenId, address _owner) public returns (address _user, IERC721 _nft) {
-        IERC721 nft = IERC721(_nftAddress);
-        address user = vm_extended.addr(_id);
+    function initWithNFT(
+        uint256 _id, 
+        address _nftAddress, 
+        uint256 _tokenId, 
+        address _owner) public returns (address _user, IERC721 _nft) {
 
-        vm_extended.startPrank(_owner);
+        IERC721 nft = IERC721(_nftAddress);
+        address user = vm.addr(_id);
+
+        vm.startPrank(_owner);
         nft.approve(user, _tokenId);
         nft.transferFrom(_owner, user, _tokenId);
-        vm_extended.stopPrank();
+        vm.stopPrank();
 
         return (user, nft);
     }
 
     /// @dev returns an address funded with ETH and any ERC20 on mainnet
-    function fullyFunded(uint256 _id, address _tokenAddress, uint256 _amount) public returns (address _user, IERC20 _token) {
+    function fullyFunded(
+        uint256 _id, 
+        address _tokenAddress, 
+        uint256 _amount) public returns (address _user, IERC20 _token) {
+    
         IERC20 token = IERC20(_tokenAddress);
-        address user = vm_extended.addr(_id);
+        address user = vm.addr(_id);
 
-        vm_extended.startPrank(_tokenAddress);
+        vm.startPrank(_tokenAddress);
         token.approve(_tokenAddress, _amount);
         token.transferFrom(_tokenAddress, user, _amount);
         token.approve(user, _amount);
-        vm_extended.stopPrank();
+        vm.stopPrank();
 
-        vm_extended.deal(user, 100 ether);
+        vm.deal(user, 100 ether);
 
         return (user, token);
+    }
+
+    function tokenMultiInit(
+        address _first, 
+        address _second, 
+        address _third) public returns (IERC20 _token1, IERC20 _token2, IERC20 _token3) {
+
+
+
     }
 
     /**

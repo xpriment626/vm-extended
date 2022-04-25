@@ -29,7 +29,7 @@ Create new forge project
 
 Inhereting `VmExtended` gives you access to all functions in the [forge standard library](https://github.com/foundry-rs/forge-std)
 
-Access cheatcodes with `vm_extended.`
+Access cheatcodes with `vm.` inherited from `forge-std`
 
 ```solidity
 // SPDX-License-Identifier: UNLICENSED
