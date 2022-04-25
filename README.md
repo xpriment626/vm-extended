@@ -31,17 +31,22 @@ Inhereting `VmExtended` gives you access to all functions in the [forge standard
 
 Access cheatcodes with `vm.` inherited from `forge-std`
 
+On top of the main functionalities in VmExtended, you'll also get access to important constants such as Chainlink price feeds, Uniswap routers, and essential tokens like DAI, USDC, and wETH which are accessed through their respective fetch functions in the Fetchers contract.
+
+Vm Extended's main usecase is in testing, but these extra helper contracts offer some convenience in development. Save time that you would've otherwise spent looking up the same deployment addresses over and over again.
+
+### Example Constants
+
 ```solidity
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.10;
 
 import { VmExtended } from "../VmExtended.sol";
 import { IERC20 } from "../interfaces/IERC20.sol";
-import { IERC721 } from "../interfaces/IERC721.sol";
 
 contract ContractTest is VmExtended {
-    // ....
-    // ....
+    IERC20 public DAI = IERC20(fetchDAI(OPTIMISM))
+    priceFeed = AggregatorV3Interface(AAVE_USD)
 }
 ```
 
