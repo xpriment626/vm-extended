@@ -19,7 +19,7 @@ contract ContractTest is VmExtended {
 
     function testERCFunding() public {
         /// Ethereum ChainID: 1
-        address wethAddress = fetchWETH(1);
+        address wethAddress = fetchWETH(ETHEREUM);
         uint256 tokenVal = 50000;
         (address bob, IERC20 weth) = initWithERC20(2, wethAddress, tokenVal);
 
@@ -30,7 +30,7 @@ contract ContractTest is VmExtended {
 
     function testWrappedToken() public {
         /// Polygon ChainID: 137
-        address wMatic = fetchWETH(137);
+        address wMatic = fetchWETH(POLYGON);
         address wMaticAddress = 0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270;
 
         assertEq(wMatic, wMaticAddress);
@@ -51,7 +51,7 @@ contract ContractTest is VmExtended {
 
     function testFullFunding() public {
         /// Ethereum ChainID: 1
-        address wethAddress = fetchWETH(1);
+        address wethAddress = fetchWETH(ETHEREUM);
         uint256 tokenVal = 50000;
         (address dave, IERC20 weth) = fullyFunded(69, wethAddress, tokenVal);
 
