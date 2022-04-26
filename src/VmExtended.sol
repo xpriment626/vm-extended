@@ -4,7 +4,7 @@ pragma solidity ^0.8.0;
 import { IERC20 } from "./interfaces/IERC20.sol";
 import { IERC721 } from "./interfaces/IERC721.sol";
 import { Test } from "../lib/forge-std/src/Test.sol";
-import { Constants } from "./Constants.sol";
+import { Fetcher } from "./Fetcher.sol";
 
 /**
 * @dev VmExtended is a set of functions designed to make
@@ -17,7 +17,7 @@ import { Constants } from "./Constants.sol";
 */
 
 /// @dev VmExtended inherits from forge-std Test which itself inherits from DSTest
-abstract contract VmExtended is Test, Constants {
+abstract contract VmExtended is Test, Fetcher {
     // Initialises a user with 100 ether
     /// @param _id is used to set the private key of the user
     /// @dev returns address funded with ETH
