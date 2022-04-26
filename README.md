@@ -2,7 +2,7 @@
 
 # Overview
 
-`vm-extended` is a set of functions designed specifically to work with mainnet forks with - eth, arbitrum, optimism, polygon currently supported.
+`vm-extended` is a set of functions built ontop of DSTest and designed specifically to work with mainnet forks with - eth, arbitrum, optimism, polygon currently supported.
 
 The idea of these functions is to make testing token and nft interactions easy, without needing to write up any mocks of your own. Vm Extended also comes with `Fetcher`, a contract used to quickly initialise Chainlink pricefeeds and fetch common token addresses relative to chainid selected. The Fetcher contract inherits from a set of constants which can be accessed in any contract using vm-extended.
 
