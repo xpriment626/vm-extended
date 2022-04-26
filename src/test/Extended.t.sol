@@ -64,6 +64,29 @@ contract ContractTest is VmExtended {
         assertEq(balanceERC20, tokenVal);
     }
 
+    function testMultitokenInit() public {
+        address wethAddress = fetchWETH(ETHEREUM);
+        address daiAddress = fetchDAI(ETHEREUM);
+        address usdcAddress = fetchUSDC(ETHEREUM);
+
+        (IERC20 weth,
+         IERC20 dai,
+         IERC20 usdc) = tokenMultiInit(wethAddress, daiAddress, usdcAddress);
+
+         uint256 wethTS = weth.totalSupply();
+         uint256 expectWETH = weth.totalSupply();
+
+         uint256 daiTS = dai.totalSupply();
+         uint256 expectDai = dai.totalSupply();
+
+         uint256 usdcTS = usdc.totalSupply();
+         uint256 expectUsdc = usdc.totalSupply();
+
+         assertEq(wethTS, expectWETH);
+         assertEq(daiTS, expectDai);
+         assertEq(usdcTS, expectUsdc);
+    }
+
     function testCorePricefeed() public {
         AggregatorV3Interface pricefeedEth = useCorePricefeed(ETH_USD);
         (,int256 priceEth,,,) = pricefeedEth.latestRoundData();
