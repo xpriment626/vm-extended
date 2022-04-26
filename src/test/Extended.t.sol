@@ -65,13 +65,9 @@ contract ContractTest is VmExtended {
     }
 
     function testMultitokenInit() public {
-        address wethAddress = fetchWETH(ETHEREUM);
-        address daiAddress = fetchDAI(ETHEREUM);
-        address usdcAddress = fetchUSDC(ETHEREUM);
-
         (IERC20 weth,
          IERC20 dai,
-         IERC20 usdc) = tokenMultiInit(wethAddress, daiAddress, usdcAddress);
+         IERC20 usdc) = tokenMultiInit(fetchWETH(ETHEREUM), fetchDAI(ETHEREUM), fetchUSDC(ETHEREUM));
 
          uint256 wethTS = weth.totalSupply();
          uint256 expectWETH = weth.totalSupply();
