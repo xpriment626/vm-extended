@@ -3,7 +3,8 @@ pragma solidity ^0.8.0;
 
 import { IERC20 } from "./interfaces/IERC20.sol";
 import { IERC721 } from "./interfaces/IERC721.sol";
-import { Test } from "../lib/forge-std/src/Test.sol";
+import { Vm } from "./interfaces/Vm.sol";
+import { DSTest } from "../lib/ds-test/src/test.sol";
 import { Fetcher } from "./Fetcher.sol";
 
 /**
@@ -17,13 +18,16 @@ import { Fetcher } from "./Fetcher.sol";
 */
 
 /// @dev VmExtended inherits from forge-std Test which itself inherits from DSTest
-abstract contract VmExtended is Test, Fetcher {
+abstract contract VmExtended is DSTest, Fetcher {
+
+    Vm public vm_extended = Vm(HEVM_ADDRESS);
+
     // Initialises a user with 100 ether
     /// @param _id is used to set the private key of the user
     /// @dev returns address funded with ETH
     function initWithETH(uint256 _id) public returns (address) {
-        address user = vm.addr(_id);
-        vm.deal(user, 100 ether);
+        address user = vm_extended.addr(_id);
+        vm_extended.deal(user, 100 ether);
 
         return user;
     }
@@ -40,13 +44,13 @@ abstract contract VmExtended is Test, Fetcher {
         address _tokenAddress, 
         uint256 _amount) public returns(address _user, IERC20 _token) {
         IERC20 token = IERC20(_tokenAddress);
-        address user = vm.addr(_id);
+        address user = vm_extended.addr(_id);
 
-        vm.startPrank(_tokenAddress);
+        vm_extended.startPrank(_tokenAddress);
         token.approve(_tokenAddress, _amount);
         token.transferFrom(_tokenAddress, user, _amount);
         token.approve(user, _amount);
-        vm.stopPrank();
+        vm_extended.stopPrank();
 
         return (user, token);
     }
@@ -65,12 +69,12 @@ abstract contract VmExtended is Test, Fetcher {
         address _owner) public returns (address _user, IERC721 _nft) {
 
         IERC721 nft = IERC721(_nftAddress);
-        address user = vm.addr(_id);
+        address user = vm_extended.addr(_id);
 
-        vm.startPrank(_owner);
+        vm_extended.startPrank(_owner);
         nft.approve(user, _tokenId);
         nft.transferFrom(_owner, user, _tokenId);
-        vm.stopPrank();
+        vm_extended.stopPrank();
 
         return (user, nft);
     }
@@ -82,15 +86,15 @@ abstract contract VmExtended is Test, Fetcher {
         uint256 _amount) public returns (address _user, IERC20 _token) {
     
         IERC20 token = IERC20(_tokenAddress);
-        address user = vm.addr(_id);
+        address user = vm_extended.addr(_id);
 
-        vm.startPrank(_tokenAddress);
+        vm_extended.startPrank(_tokenAddress);
         token.approve(_tokenAddress, _amount);
         token.transferFrom(_tokenAddress, user, _amount);
         token.approve(user, _amount);
-        vm.stopPrank();
+        vm_extended.stopPrank();
 
-        vm.deal(user, 100 ether);
+        vm_extended.deal(user, 100 ether);
 
         return (user, token);
     }

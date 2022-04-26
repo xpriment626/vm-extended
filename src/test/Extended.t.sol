@@ -4,6 +4,7 @@ pragma solidity ^0.8.10;
 import { VmExtended } from "../VmExtended.sol";
 import { IERC20 } from "../interfaces/IERC20.sol";
 import { IERC721 } from "../interfaces/IERC721.sol";
+import { AggregatorV3Interface } from "../interfaces/AggregatorV3Interface.sol";
 
 contract ContractTest is VmExtended {
     function setUp() public {}
@@ -61,5 +62,29 @@ contract ContractTest is VmExtended {
 
         assertEq(balanceEth, expectEth);
         assertEq(balanceERC20, tokenVal);
+    }
+
+    function testCorePricefeed() public {
+        AggregatorV3Interface pricefeedEth = useCorePricefeed(ETH_USD);
+        (,int256 priceEth,,,) = pricefeedEth.latestRoundData();
+        (,int256 expectedEth,,,) = pricefeedEth.latestRoundData();
+
+        assertEq(priceEth, expectedEth);
+    }
+
+    function testStablecoinPricefeed() public {
+        AggregatorV3Interface pricefeedDai = useStablecoinPricefeed(DAI_USD);
+        (,int256 priceDai,,,) = pricefeedDai.latestRoundData();
+        (,int256 expectedDai,,,) = pricefeedDai.latestRoundData();
+
+        assertEq(priceDai, expectedDai);
+    }
+
+    function testDeFiPricefeed() public {
+        AggregatorV3Interface pricefeedSnx = useDeFiPricefeed(SNX_USD);
+        (,int256 priceSnx,,,) = pricefeedSnx.latestRoundData();
+        (,int256 expectedSnx,,,) = pricefeedSnx.latestRoundData();
+
+        assertEq(priceSnx, expectedSnx);
     }
 }
