@@ -32,6 +32,30 @@ abstract contract VmExtended is DSTest, Fetcher {
         return user;
     }
 
+    function initAccounts(
+        uint256 _firstKey, 
+        uint256 _secondKey, 
+        uint256 _thirdKey
+    ) 
+        public 
+        returns (
+            address _first, 
+            address _second, 
+            address _third
+        )
+    {
+        address user1 = vm_extended.addr(_firstKey);
+        address user2 = vm_extended.addr(_secondKey);
+        address user3 = vm_extended.addr(_thirdKey);
+
+        vm_extended.deal(user1, 100 ether);
+        vm_extended.deal(user2, 100 ether);
+        vm_extended.deal(user3, 100 ether);
+
+        return (user1, user2, user3);
+
+    } 
+
     /**
     * @param _id sets the private key for the user
     * @param _tokenAddress is used to mock a mainnet transfer of any ERC20 token
@@ -42,7 +66,8 @@ abstract contract VmExtended is DSTest, Fetcher {
     function initWithERC20(
         uint256 _id, 
         address _tokenAddress, 
-        uint256 _amount) public returns(address _user, IERC20 _token) {
+        uint256 _amount
+    ) public returns (address _user, IERC20 _token) {
         IERC20 token = IERC20(_tokenAddress);
         address user = vm_extended.addr(_id);
 
@@ -66,7 +91,8 @@ abstract contract VmExtended is DSTest, Fetcher {
         uint256 _id, 
         address _nftAddress, 
         uint256 _tokenId, 
-        address _owner) public returns (address _user, IERC721 _nft) {
+        address _owner
+    ) public returns (address _user, IERC721 _nft) {
 
         IERC721 nft = IERC721(_nftAddress);
         address user = vm_extended.addr(_id);
@@ -83,7 +109,8 @@ abstract contract VmExtended is DSTest, Fetcher {
     function fullyFunded(
         uint256 _id, 
         address _tokenAddress, 
-        uint256 _amount) public returns (address _user, IERC20 _token) {
+        uint256 _amount
+    ) public returns (address _user, IERC20 _token) {
     
         IERC20 token = IERC20(_tokenAddress);
         address user = vm_extended.addr(_id);
@@ -98,11 +125,22 @@ abstract contract VmExtended is DSTest, Fetcher {
 
         return (user, token);
     }
-
+    /// @param _first address of token 1
+    /// @param _second address of token 2
+    /// @param _third address of token 3
     function tokenMultiInit(
         address _first, 
         address _second, 
-        address _third) public pure returns (IERC20 _token1, IERC20 _token2, IERC20 _token3) {
+        address _third
+    ) 
+        public 
+        pure 
+        returns (
+            IERC20 _token1, 
+            IERC20 _token2, 
+            IERC20 _token3
+        ) 
+    {
 
             IERC20 token1 = IERC20(_first);
             IERC20 token2 = IERC20(_second);
@@ -110,5 +148,4 @@ abstract contract VmExtended is DSTest, Fetcher {
 
             return (token1, token2, token3);
     }
-
 }

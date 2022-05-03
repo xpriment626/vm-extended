@@ -7,6 +7,8 @@ import { IERC721 } from "../interfaces/IERC721.sol";
 import { AggregatorV3Interface } from "../interfaces/AggregatorV3Interface.sol";
 
 contract ContractTest is VmExtended {
+
+    event Logger(uint256 indexed);
     function setUp() public {}
 
     function testEthFunding() public {
@@ -81,6 +83,23 @@ contract ContractTest is VmExtended {
          assertEq(wethTS, expectWETH);
          assertEq(daiTS, expectDai);
          assertEq(usdcTS, expectUsdc);
+    }
+
+    function testInitAccounts() public {
+        address annie;
+        address bob;
+        address charlie;
+
+        (annie, bob, charlie) = initAccounts(111, 222, 333);
+
+        uint256 expectEth = 100 ether;
+        uint256 annieBal = address(annie).balance;
+        uint256 bobBal = address(bob).balance;
+        uint256 charlieBal = address(charlie).balance;
+
+        assertEq(annieBal, expectEth);
+        assertEq(bobBal, expectEth);
+        assertEq(charlieBal, expectEth);
     }
 
     function testCorePricefeed() public {
