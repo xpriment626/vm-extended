@@ -25,11 +25,11 @@ abstract contract VmExtended is DSTest, Fetcher {
     // Initialises a user with 100 ether
     /// @param _id is used to set the private key of the user
     /// @dev returns address funded with ETH
-    function initWithETH(uint256 _id) public returns (address) {
+    function initWithETH(uint256 _id) public returns (address payable) {
         address user = vm_extended.addr(_id);
         vm_extended.deal(user, 100 ether);
 
-        return user;
+        return payable(user);
     }
 
     function initAccounts(
@@ -39,9 +39,9 @@ abstract contract VmExtended is DSTest, Fetcher {
     ) 
         public 
         returns (
-            address _first, 
-            address _second, 
-            address _third
+            address payable _first, 
+            address payable _second, 
+            address payable _third
         )
     {
         address user1 = vm_extended.addr(_firstKey);
@@ -52,7 +52,11 @@ abstract contract VmExtended is DSTest, Fetcher {
         vm_extended.deal(user2, 100 ether);
         vm_extended.deal(user3, 100 ether);
 
-        return (user1, user2, user3);
+        return (
+            payable(user1), 
+            payable(user2), 
+            payable(user3)
+        );
 
     } 
 
